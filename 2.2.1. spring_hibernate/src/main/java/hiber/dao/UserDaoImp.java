@@ -28,13 +28,13 @@ public class UserDaoImp implements UserDao {
         TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
         return query.getResultList();
     }
-
     public User findUserByCar(String model, int series) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from User u " +
+        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User u " +
                 "left outer join fetch u.car " +
-                "where u.car.model= :model and u.car.series= :series")
-                .setParameter("series", series)
-                .setParameter("model", model);
-        return (User) query.getSingleResult();
+                "where u.car.model= :model and u.car.series= :series");
+        query.setParameter("model", model);
+        query.setParameter("series", series);
+        return query.getSingleResult();
     }
 }
+
